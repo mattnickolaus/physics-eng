@@ -4,7 +4,7 @@
 #include <math.h>
 // Uses:  sqrtf()
 
-// #ifdef PHYSICS_IMPLEMENTATION
+#ifdef PHYSICS_IMPLEMENTATION
 #undef PHYSICS_IMPLEMENTATION
 
 #define PHYS_API inline
@@ -45,7 +45,7 @@ PHYS_API Vector3 Vector3Scale(Vector3 v, float scalar) {
 }
 
 PHYS_API Vector3 Vector3Normalize(Vector3 v) {
-  float magnitude = Vector3Magnitude();
+  float magnitude = Vector3Magnitude(v);
   if (magnitude > 0) {
     return Vector3Scale(v, 1.0f / magnitude);
   }
