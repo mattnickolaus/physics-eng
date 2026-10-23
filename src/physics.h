@@ -45,10 +45,26 @@ PHYS_API Vector3 Vector3Scale(Vector3 v, float scalar) {
 }
 
 PHYS_API Vector3 Vector3Normalize(Vector3 v) {
+  Vector3 result = v;
+
   float magnitude = Vector3Magnitude(v);
   if (magnitude > 0) {
-    return Vector3Scale(v, 1.0f / magnitude);
+    result = Vector3Scale(v, 1.0f / magnitude);
   }
+  return result;
+}
+
+PHYS_API Vector3 Vector3Add(Vector3 v1, Vector3 v2) {
+  Vector3 result = {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z};
+
+  return result;
+}
+
+// Subtracts v1 from v2 (v1 - v2)
+PHYS_API Vector3 Vector3Subtract(Vector3 v1, Vector3 v2) {
+  Vector3 result = {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
+
+  return result;
 }
 
 #endif // PHYSICS_IMPLEMENTATION
