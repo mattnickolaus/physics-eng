@@ -4,7 +4,7 @@
 #include <math.h>
 // Uses:  sqrtf()
 
-#ifdef PHYSICS_IMPLEMENTATION
+// #ifdef PHYSICS_IMPLEMENTATION
 #undef PHYSICS_IMPLEMENTATION
 
 #define PHYS_API inline
@@ -65,6 +65,18 @@ PHYS_API Vector3 Vector3Subtract(Vector3 v1, Vector3 v2) {
   Vector3 result = {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 
   return result;
+}
+
+// Component product - Multiplies each v1 component  by the repective v2
+// component
+PHYS_API Vector3 Vector3Multiply(Vector3 v1, Vector3 v2) {
+  Vector3 result = {v1.x * v2.x, v1.y * v2.y, v1.z * v2.z};
+
+  return result;
+}
+
+PHYS_API float Vector3DotProduct(Vector3 v1, Vector3 v2) {
+  return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 #endif // PHYSICS_IMPLEMENTATION
