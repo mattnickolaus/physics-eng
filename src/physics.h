@@ -2,9 +2,10 @@
 #define PHYSICS_H_
 
 #include <math.h>
+#include <stdbool.h>
 // Uses:  sqrtf()
 
-// #ifdef PHYSICS_IMPLEMENTATION
+#ifdef PHYSICS_IMPLEMENTATION
 #undef PHYSICS_IMPLEMENTATION
 
 #define PHYS_API inline
@@ -77,6 +78,30 @@ PHYS_API Vector3 Vector3Multiply(Vector3 v1, Vector3 v2) {
 
 PHYS_API float Vector3DotProduct(Vector3 v1, Vector3 v2) {
   return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+PHYS_API Vector3 Vector3CrossProduct(Vector3 v1, Vector3 v2) {
+  Vector3 result = {
+      (v1.y * v2.z) - (v1.z * v2.y),
+      (v1.z * v2.x) - (v1.x * v2.z),
+      (v1.x * v2.y) - (v1.y * v2.x),
+  };
+  return result;
+}
+
+// Creates a orthonormal basis or a triple of vectors where each vector is at a
+// right angle to the other 2. v2 must not be a parallel vector to v1 otherwise
+// we return false.
+PHYS_API bool makeOrthonormalBasis(Vector3 *v1, Vector3 *v2, Vector3 *v3) {
+  *v1 = Vector3Normalize(*v1);
+  *v3 = Vector3CrossProduct(*v1, *v2);
+  if (Vector3SquareMagnitude(*v3) == 0)
+    return false;
+
+  *v3 = Vector3Normalize(*v3);
+  *v2 = Vector3CrossProduct(*v3, *v1);
+
+  return true;
 }
 
 #endif // PHYSICS_IMPLEMENTATION
