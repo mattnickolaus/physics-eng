@@ -1,20 +1,30 @@
 #ifndef PHYSICS_H_
 #define PHYSICS_H_
 
+#ifndef PHYS_API
+#define PHYS_API static inline
+#endif // PHYS_API
+
 #include <math.h>
-#include <stdbool.h>
 // Uses:  sqrtf()
-
-#ifdef PHYSICS_IMPLEMENTATION
-#undef PHYSICS_IMPLEMENTATION
-
-#define PHYS_API inline
+#include <stdbool.h>
 
 typedef struct {
   float x;
   float y;
   float z;
 } Vector3;
+
+typedef struct {
+  Vector3 position;
+  Vector3 velocity;
+  Vector3 acceleration;
+} Particle;
+
+#endif // PHYSICS_H_
+
+#ifdef PHYSICS_IMPLEMENTATION
+#undef PHYSICS_IMPLEMENTATION
 
 PHYS_API Vector3 Vector3Zero(void) {
   Vector3 result = {0.0f, 0.0f, 0.0f};
@@ -28,13 +38,17 @@ PHYS_API Vector3 Vector3Invert(Vector3 v) {
   return result;
 }
 
-// Gets the magnitude or length of a Vector3
+/*
+ * Gets the magnitude or length of a Vector3
+ * */
 PHYS_API float Vector3Magnitude(Vector3 v) {
   return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-// Gets the squared magnitude or length of a Vector3
-// Useful for comparing magnitudes and with less cost
+/*
+ * Gets the squared magnitude or length of a Vector3 Useful for comparing
+ * magnitudes and with less cost
+ * */
 PHYS_API float Vector3SquareMagnitude(Vector3 v) {
   return v.x * v.x + v.y * v.y + v.z * v.z;
 }
@@ -61,21 +75,28 @@ PHYS_API Vector3 Vector3Add(Vector3 v1, Vector3 v2) {
   return result;
 }
 
-// Subtracts v1 from v2 (v1 - v2)
+/*
+ * Subtracts v1 from v2 (v1 - v2)
+ * */
 PHYS_API Vector3 Vector3Subtract(Vector3 v1, Vector3 v2) {
   Vector3 result = {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 
   return result;
 }
 
-// Component product - Multiplies each v1 component  by the repective v2
-// component
+/*
+ * Component product - Multiplies each v1 component  by the repective v2
+ * component
+ * */
 PHYS_API Vector3 Vector3Multiply(Vector3 v1, Vector3 v2) {
   Vector3 result = {v1.x * v2.x, v1.y * v2.y, v1.z * v2.z};
 
   return result;
 }
 
+/*
+ * Also referred to as the Scalar Product
+ */
 PHYS_API float Vector3DotProduct(Vector3 v1, Vector3 v2) {
   return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
@@ -89,9 +110,18 @@ PHYS_API Vector3 Vector3CrossProduct(Vector3 v1, Vector3 v2) {
   return result;
 }
 
-// Creates a orthonormal basis or a triple of vectors where each vector is at a
-// right angle to the other 2. v2 must not be a parallel vector to v1 otherwise
-// we return false.
+/*
+ * Prints the vector values with a label and 2 decimals of percision
+ * */
+PHYS_API void Vector3Print(Vector3 v, char *label) {
+  printf("%s {%.2f, %.2f, %.2f}\n", label, v.x, v.y, v.z);
+}
+
+/*
+ * Creates a orthonormal basis or a triple of vectors where each vector is at a
+ * right angle to the other 2. v2 must not be a parallel vector to v1 otherwise
+ * we return false.
+ * */
 PHYS_API bool makeOrthonormalBasis(Vector3 *v1, Vector3 *v2, Vector3 *v3) {
   *v1 = Vector3Normalize(*v1);
   *v3 = Vector3CrossProduct(*v1, *v2);
@@ -105,5 +135,3 @@ PHYS_API bool makeOrthonormalBasis(Vector3 *v1, Vector3 *v2, Vector3 *v3) {
 }
 
 #endif // PHYSICS_IMPLEMENTATION
-
-#endif // PHYSICS_H_
