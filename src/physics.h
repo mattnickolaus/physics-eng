@@ -19,6 +19,9 @@ typedef struct {
   Vector3 position;
   Vector3 velocity;
   Vector3 acceleration;
+  float damping; // value 1 to 0 with 1 being that the object maintains all it's
+                 // velocity and 0 meaning it maintains no velocity or is
+                 // reduced to nothing
 } Particle;
 
 #endif // PHYSICS_H_
